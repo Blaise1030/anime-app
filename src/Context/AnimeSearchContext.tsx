@@ -68,7 +68,6 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
       );
       if (res.status === 404) setPageNoResult(true);
       const json = await res.json();
-      console.log(json?.last_page);
       setSeachPageTotalNum(json?.last_page);
       const results = json.results;
       setSearchPageRes(results);
@@ -76,7 +75,7 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
     } catch (e: any) {
       console.log(e);
     }
-  }, 200);
+  }, 400);
 
   const fetchSearchData = async (query: string) => {
     requests.forEach((a) => a.abort());

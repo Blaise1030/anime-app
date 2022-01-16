@@ -15,7 +15,6 @@ const DesktopPaginator = ({
   setSelectedPage: (a: number) => void;
 }) => {
   const offset = Math.floor((selectedPage - 1) / size);
-  const sections = Math.ceil(pageNumber / size);
   const increment = () => setSelectedPage(selectedPage + 1);
   const decrement = () => setSelectedPage(selectedPage - 1);
   const clickButton = setSelectedPage;
@@ -54,7 +53,7 @@ const DesktopPaginator = ({
       />
       <IconButton
         icon={<ArrowForwardIcon />}
-        disabled={selectedPage >= pageNumber}
+        disabled={offset >= Math.floor((pageNumber - 1) / size)}
         onClick={increment}
         aria-label="right"
         size={"sm"}
