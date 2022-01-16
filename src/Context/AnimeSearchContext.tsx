@@ -111,7 +111,7 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
       if (import.meta.env.DEV) console.log(e);
     }
   };
-  const onSearch = debounce(fetchSearchData, 550);
+  const onSearch = debounce(fetchSearchData, 600);
   const setSearchPageNum = (page: number) => {
     setPageNum(page);
     setSearchPageRes([]);
