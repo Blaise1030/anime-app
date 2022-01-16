@@ -30,6 +30,7 @@ import {
 import React, { useContext } from "react";
 import { FOR, IF, ELSEIF } from "react-controls-statements";
 import { useNavigate } from "react-router-dom";
+import useKeyboardShortcut from "use-keyboard-shortcut";
 import { UseAnimeDetailsContext } from "../Context/AnimeDetailsContext";
 import { UseAnimeSearchContext } from "../Context/AnimeSearchContext";
 import { ISearchDetails } from "../type";
@@ -38,7 +39,11 @@ import AnimeCard from "./AnimeCard";
 const NavSearchbar = () => {
   const bg = useColorModeValue("gray.50", "gray.700");
   const borderColor = useColorModeValue("gray.200", "transparent");
-  const { onClose, isOpen, onToggle } = useDisclosure();
+  const { onClose, isOpen, onToggle, onOpen } = useDisclosure();
+  useKeyboardShortcut(["Shift"], onOpen, {
+    overrideSystem: true,
+    ignoreInputFields: false,
+  });
 
   return (
     <React.Fragment>
@@ -78,7 +83,6 @@ const NavSearchbar = () => {
         <Text color="gray.500">Search</Text>
         <Spacer />
         <Kbd>shift</Kbd>
-        <Kbd>S</Kbd>
       </HStack>
       <NavSearchModal onClose={onClose} isOpen={isOpen} />
     </React.Fragment>
@@ -138,6 +142,16 @@ const NavSearchModal = ({
               onChange={(e: any) => onSearch(e?.target?.value.toString())}
             />
           </InputGroup>
+          <Collapse in={fetchingData && !noResult} animateOpacity>
+            <br />
+            <Center children={<Spinner />} />
+            <br />
+          </Collapse>
+          <Collapse in={!fetchingData && noResult} animateOpacity>
+            <br />
+            <Center children={<>No Search Results</>} />
+            <br />
+          </Collapse>
           <Collapse in={Boolean(searchResult?.length)} animateOpacity>
             <Divider />
             <Box
@@ -153,17 +167,6 @@ const NavSearchModal = ({
                 }}
               />
             </Box>
-          </Collapse>
-
-          <Collapse in={fetchingData && !noResult} animateOpacity>
-            <br />
-            <Center children={<Spinner />} />
-            <br />
-          </Collapse>
-          <Collapse in={!fetchingData && noResult} animateOpacity>
-            <br />
-            <Center children={<>No Search Results</>} />
-            <br />
           </Collapse>
         </ModalBody>
         <IF c={Boolean(searchResult?.length)}>

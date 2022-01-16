@@ -92,7 +92,6 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
     try {
       setFetchingData(true);
       setNoResult(false);
-      setSearchResults([]);
       const res = await fetch(
         `${
           import.meta.env.VITE_APP_ANIME_ENDPOINT
@@ -112,7 +111,7 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
       if (import.meta.env.DEV) console.log(e);
     }
   };
-  const onSearch = debounce(fetchSearchData, 500);
+  const onSearch = debounce(fetchSearchData, 550);
   const setSearchPageNum = (page: number) => {
     setPageNum(page);
     setSearchPageRes([]);
