@@ -9,13 +9,17 @@ const AnimeDetailsContext = ({ children }: { children: ReactElement }) => {
   const [fetchingData, setFetchingData] = useState<boolean>(true);
 
   const fetchAnimeDetail = async (animeId: string) => {
-    setFetchingData(true);
-    const res = await fetch(
-      `${import.meta.env.VITE_APP_ANIME_ENDPOINT}/anime/${animeId}`
-    );
-    const anime = await res.json();
-    setSelectedAnime(anime);
-    setFetchingData(false);
+    try {
+      setFetchingData(true);
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_ANIME_ENDPOINT}/anime/${animeId}`
+      );
+      const anime = await res.json();
+      setSelectedAnime(anime);
+      setFetchingData(false);
+    } catch (error) {
+      if (import.meta.env.DEV) console.log(error);
+    }
   };
 
   return (

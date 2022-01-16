@@ -75,7 +75,7 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
       setSearchPageRes(results);
       setSearchPageLoading(false);
     } catch (e: any) {
-      console.log(e);
+      if (import.meta.env.DEV) console.log(e);
     }
   }, 400);
 
@@ -108,7 +108,9 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
       const results = json.results;
       setSearchResults(results || []);
       setFetchingData(false);
-    } catch (e: any) {}
+    } catch (e: any) {
+      if (import.meta.env.DEV) console.log(e);
+    }
   };
   const onSearch = debounce(fetchSearchData, 500);
   const setSearchPageNum = (page: number) => {

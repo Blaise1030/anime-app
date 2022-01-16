@@ -15,28 +15,36 @@ const AnimeContext = ({ children }: { children: ReactElement }) => {
   }, []);
 
   const fetchTodayAnime = async () => {
-    const today = new Intl.DateTimeFormat("en-US", { weekday: "long" })
-      .format(new Date())
-      .toLowerCase();
-    setFetchingData(true);
-    const res = await fetch(
-      `${import.meta.env.VITE_APP_ANIME_ENDPOINT}/schedule/${today}`
-    );
-    const json = await res.json();
-    const animes = json;
-    setAnimeToday(animes[today]);
-    setFetchingData(false);
+    try {
+      const today = new Intl.DateTimeFormat("en-US", { weekday: "long" })
+        .format(new Date())
+        .toLowerCase();
+      setFetchingData(true);
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_ANIME_ENDPOINT}/schedule/${today}`
+      );
+      const json = await res.json();
+      const animes = json;
+      setAnimeToday(animes[today]);
+      setFetchingData(false);
+    } catch (e) {
+      if (import.meta.env.DEV) console.log(e);
+    }
   };
 
   const fetchAnime = async () => {
-    setFetchingData(true);
-    const res = await fetch(
-      `${import.meta.env.VITE_APP_ANIME_ENDPOINT}/season/later`
-    );
-    const json = await res.json();
-    const animes = json.anime;
-    setAnime(animes?.length > 8 ? animes.slice(0, 8) : animes);
-    setFetchingData(false);
+    try {
+      setFetchingData(true);
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_ANIME_ENDPOINT}/season/later`
+      );
+      const json = await res.json();
+      const animes = json.anime;
+      setAnime(animes?.length > 8 ? animes.slice(0, 8) : animes);
+      setFetchingData(false);
+    } catch (error) {
+      if (import.meta.env.DEV) console.log(error);
+    }
   };
 
   return (

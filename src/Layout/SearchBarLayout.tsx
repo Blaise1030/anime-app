@@ -15,6 +15,7 @@ const SearchBarLayout = ({
       <Box
         width={"100%"}
         overflowY={"auto"}
+        overflowX={"hidden"}
         height={"calc(100% - 68px)"}
         id="scroll-height"
         onScroll={onScroll}
@@ -26,6 +27,7 @@ const SearchBarLayout = ({
           height="100%"
         >
           {children}
+          <Box height={[10, 10, 0]} />
         </Box>
       </Box>
     </>
