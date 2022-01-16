@@ -10,7 +10,9 @@ const AnimeDetailsContext = ({ children }: { children: ReactElement }) => {
 
   const fetchAnimeDetail = async (animeId: string) => {
     setFetchingData(true);
-    const res = await fetch(`https://api.jikan.moe/v3/anime/${animeId}`);
+    const res = await fetch(
+      `${import.meta.env.VITE_APP_ANIME_ENDPOINT}/anime/${animeId}`
+    );
     const anime = await res.json();
     setSelectedAnime(anime);
     setFetchingData(false);

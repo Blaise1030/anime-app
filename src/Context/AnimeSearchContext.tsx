@@ -60,7 +60,9 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
       setNoResult(false);
       setSearchResults([]);
       const res = await fetch(
-        `https://api.jikan.moe/v3/search/anime?q=${query}&page=${searchPageNum}`,
+        `${
+          import.meta.env.VITE_APP_ANIME_ENDPOINT
+        }/search/anime?q=${query}&page=${searchPageNum}`,
         {
           signal: controller.signal,
           method: "get",
@@ -92,7 +94,9 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
       setNoResult(false);
       setSearchResults([]);
       const res = await fetch(
-        `https://api.jikan.moe/v3/search/anime?q=${query}&page=1`,
+        `${
+          import.meta.env.VITE_APP_ANIME_ENDPOINT
+        }/search/anime?q=${query}&page=1`,
         {
           signal: controller.signal,
           method: "get",

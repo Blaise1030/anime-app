@@ -19,7 +19,9 @@ const AnimeContext = ({ children }: { children: ReactElement }) => {
       .format(new Date())
       .toLowerCase();
     setFetchingData(true);
-    const res = await fetch(`https://api.jikan.moe/v3/schedule/${today}`);
+    const res = await fetch(
+      `${import.meta.env.VITE_APP_ANIME_ENDPOINT}/schedule/${today}`
+    );
     const json = await res.json();
     const animes = json;
     setAnimeToday(animes[today]);
@@ -28,7 +30,9 @@ const AnimeContext = ({ children }: { children: ReactElement }) => {
 
   const fetchAnime = async () => {
     setFetchingData(true);
-    const res = await fetch(`https://api.jikan.moe/v3/season/later`);
+    const res = await fetch(
+      `${import.meta.env.VITE_APP_ANIME_ENDPOINT}/season/later`
+    );
     const json = await res.json();
     const animes = json.anime;
     setAnime(animes?.length > 8 ? animes.slice(0, 8) : animes);

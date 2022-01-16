@@ -16,7 +16,7 @@
     "framer-motion": "^5.6.0",
     "lodash.debounce": "^4.0.8",
     "react": "^17.0.2",
-    "react-controls-statements": "^0.1.4",
+    "react-controls-statements": "^0.1.5",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.2.1",
     "react-swipeable-views": "^0.14.0"
