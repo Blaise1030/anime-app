@@ -28,7 +28,7 @@ const SearchBarLayout = ({
           height="100%"
         >
           {children}
-          <Box width={"100%"} py={10}>
+          <Box width={"100%"} py={20}>
             <Center fontSize={13}>
               <Link
                 href="https://www.linkedin.com/in/blaise-tiong-6800a31a9/"
@@ -46,7 +46,6 @@ const SearchBarLayout = ({
               </Link>
             </Center>
           </Box>
-          <Box height={10}></Box>
         </Box>
       </Box>
     </>
