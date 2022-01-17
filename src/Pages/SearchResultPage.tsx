@@ -40,9 +40,6 @@ const SearchResultPage = () => {
       <Text fontWeight={"extrabold"} paddingY={3}>
         Search Result for {searchParams.get("query")}
       </Text>
-      <IF c={pageNoResult}>
-        <Text>No results</Text>
-      </IF>
       <Grid templateColumns="repeat(4, 1fr)" gap={2}>
         <IF c={searchPageLoading || searchPageRes?.length === 0}>
           <AnimeCardSkeleton />

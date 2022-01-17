@@ -1,7 +1,6 @@
 import { createContext, ReactElement, useEffect, useState } from "react";
 import { ISearchDetails } from "../type";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { debounce } from "../helper";
 
 const initContext = {};
 export const UseAnimeSearchContext = createContext<any>(initContext);
@@ -20,6 +19,7 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
   const [searchResult, setSearchResults] = useState<Array<ISearchDetails>>([]);
   const [searchPageRes, setSearchPageRes] = useState<Array<ISearchDetails>>([]);
   const [requests, setRequests] = useState<AbortController[]>([]);
+  const [timer, setTimer] = useState(null);
 
   useEffect(() => {
     if (
@@ -39,6 +39,16 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
       pathname: "/search",
     });
     setSearchPageLoading(false);
+  };
+
+  const debounce = (fn: Function, delay: number) => {
+    return (...args: any) => {
+      clearTimeout(timer as any);
+      const t = setTimeout(() => {
+        fn(...args);
+      }, delay);
+      setTimer(t as any);
+    };
   };
 
   const fetchSearchPageData = async (query: string) => {
@@ -105,7 +115,7 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
       if (import.meta.env.DEV) console.log(e);
     }
   };
-  const onSearch = debounce(fetchSearchData, 600);
+  const onSearch = debounce(fetchSearchData, 300);
   const setSearchPageNum = (page: number) => {
     setPageNum(page);
     setSearchPageRes([]);

@@ -27,7 +27,7 @@ import {
   Center,
   Collapse,
 } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FOR, IF, ELSEIF } from "react-controls-statements";
 import { useNavigate } from "react-router-dom";
 import useKeyboardShortcut from "use-keyboard-shortcut";
@@ -99,14 +99,9 @@ const NavSearchModal = ({
   const [isLargerThan1280] = useMediaQuery("(min-width: 1280px)");
   const navigate = useNavigate();
   const { fetchAnimeDetail } = useContext(UseAnimeDetailsContext);
-  const {
-    searchResult,
-    onSearch,
-    fetchingData,
-    noResult,
-    query,
-    onClickSeeAll,
-  } = useContext(UseAnimeSearchContext);
+  const { searchResult, onSearch, fetchingData, noResult, onClickSeeAll } =
+    useContext(UseAnimeSearchContext);
+  const [query, setQuery] = useState<string>("");
 
   const processSearchResult = () =>
     searchResult?.length > 10 ? searchResult.slice(0, 10) : searchResult;
@@ -139,7 +134,10 @@ const NavSearchModal = ({
               type="text"
               autoFocus
               placeholder="Search"
-              onChange={(e: any) => onSearch(e?.target?.value.toString())}
+              onInput={(e: any) => {
+                onSearch(e?.target?.value.toString());
+                setQuery(e?.target?.value.toString());
+              }}
             />
           </InputGroup>
           <Collapse in={fetchingData && !noResult} animateOpacity>
@@ -174,7 +172,7 @@ const NavSearchModal = ({
             <Button
               isFullWidth
               onClick={() => {
-                onClickSeeAll();
+                onClickSeeAll(query);
                 onClose();
               }}
             >
