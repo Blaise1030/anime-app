@@ -1,5 +1,5 @@
 import { Grid, Text } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { IF, FOR, ELSE } from "react-controls-statements";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import AnimeCard from "../Components/AnimeCard";
@@ -14,6 +14,7 @@ const SearchResultPage = () => {
   const navigate = useNavigate();
   let [searchParams] = useSearchParams();
   const { fetchAnimeDetail } = useContext(UseAnimeDetailsContext);
+  const [disabled, setDisabled] = useState(false);
   const {
     searchPageRes,
     searchPageLoading,
@@ -25,6 +26,12 @@ const SearchResultPage = () => {
   const onClick = (id: string) => {
     fetchAnimeDetail(id);
     navigate(`/${id}`);
+  };
+
+  const onSelectPageNum = (index: number) => {
+    setDisabled(true);
+    setSearchPageNum(index);
+    setTimeout(() => setDisabled(false), 400);
   };
 
   return (
@@ -50,9 +57,10 @@ const SearchResultPage = () => {
       </Grid>
 
       <DesktopPaginator
-        setSelectedPage={setSearchPageNum}
+        setSelectedPage={onSelectPageNum}
         pageNumber={searchPageTotalNum}
         selectedPage={searchPageNum}
+        disable={disabled}
       />
     </SearchBarLayout>
   );

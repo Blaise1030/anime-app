@@ -8,11 +8,13 @@ const DesktopPaginator = ({
   pageNumber,
   selectedPage,
   setSelectedPage,
+  disable,
 }: {
   size?: number;
   pageNumber: number;
   selectedPage: number;
   setSelectedPage: (a: number) => void;
+  disable: boolean;
 }) => {
   const offset = Math.floor((selectedPage - 1) / size);
   const increment = () => setSelectedPage(selectedPage + 1);
@@ -28,7 +30,7 @@ const DesktopPaginator = ({
     >
       <IconButton
         icon={<ArrowBackIcon />}
-        disabled={offset === 0}
+        disabled={offset === 0 || disable}
         onClick={decrement}
         aria-label="left"
         size={"sm"}
@@ -44,6 +46,7 @@ const DesktopPaginator = ({
               <Button
                 colorScheme={index === selectedPage ? "teal" : "gray"}
                 onClick={() => clickButton(index)}
+                disabled={disable}
                 children={<>{index}</>}
                 size={"sm"}
               />
@@ -53,7 +56,7 @@ const DesktopPaginator = ({
       />
       <IconButton
         icon={<ArrowForwardIcon />}
-        disabled={offset >= Math.floor((pageNumber - 1) / size)}
+        disabled={offset >= Math.floor((pageNumber - 1) / size) || disable}
         onClick={increment}
         aria-label="right"
         size={"sm"}

@@ -33,3 +33,13 @@ export function chunks<T>(arr: T[]): Array<Array<T>> {
 }
 
 export default nFormatter;
+
+export const debounce = (fn: Function, delay: number) => {
+  let timer: any;
+  return (...args: any) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+};

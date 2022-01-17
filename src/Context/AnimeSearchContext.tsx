@@ -1,6 +1,7 @@
 import { createContext, ReactElement, useEffect, useState } from "react";
 import { ISearchDetails } from "../type";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { debounce } from "../helper";
 
 const initContext = {};
 export const UseAnimeSearchContext = createContext<any>(initContext);
@@ -28,16 +29,6 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
     )
       fetchSearchPageData(searchParams.get("query") || "");
   }, [searchPageNum, location.pathname, searchParams.get("query")]);
-
-  const debounce = (fn: Function, delay: number) => {
-    let timer: any;
-    return (...args: any) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        fn(...args);
-      }, delay);
-    };
-  };
 
   const onClickSeeAll = () => {
     setSearchPageNum(1);
