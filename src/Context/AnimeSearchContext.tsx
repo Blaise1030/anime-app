@@ -41,7 +41,7 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
     setSearchPageLoading(false);
   };
 
-  const fetchSearchPageData = debounce(async (query: string) => {
+  const fetchSearchPageData = async (query: string) => {
     requests.forEach((a) => a.abort());
     const controller = new AbortController();
     setRequests(requests.concat([controller]));
@@ -59,16 +59,19 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
           method: "get",
         }
       );
-      if (res.status === 404) setPageNoResult(true);
-      const json = await res.json();
-      setSeachPageTotalNum(json?.last_page);
-      const results = json.results;
-      setSearchPageRes(results);
-      setSearchPageLoading(false);
+      if (res.status === 404) {
+        setPageNoResult(true);
+      } else {
+        const json = await res.json();
+        if (searchPageNum === 1) setSeachPageTotalNum(json?.last_page);
+        const results = json.results;
+        setSearchPageRes(results);
+        setSearchPageLoading(false);
+      }
     } catch (e: any) {
       if (import.meta.env.DEV) console.log(e);
     }
-  }, 400);
+  };
 
   const fetchSearchData = async (query: string) => {
     requests.forEach((a) => a.abort());
