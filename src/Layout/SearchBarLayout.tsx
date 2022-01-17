@@ -46,6 +46,7 @@ const SearchBarLayout = ({
               </Link>
             </Center>
           </Box>
+          <Box height={10}></Box>
         </Box>
       </Box>
     </>
