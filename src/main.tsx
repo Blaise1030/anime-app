@@ -9,6 +9,9 @@ import "@fontsource/nunito/600.css";
 import "@fontsource/nunito/700.css";
 
 const theme = extendTheme({
+  config: {
+    useSystemColorMode: true,
+  },
   fonts: {
     heading: "nunito",
     body: "nunito",

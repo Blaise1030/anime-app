@@ -1,30 +1,72 @@
-import { AspectRatio, Grid, Skeleton } from "@chakra-ui/react";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import {
+  AspectRatio,
+  ButtonGroup,
+  Grid,
+  HStack,
+  IconButton,
+  Skeleton,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import { ELSE, FOR, IF } from "react-controls-statements";
 import SwipeableViews from "react-swipeable-views";
-import { autoPlay } from "react-swipeable-views-utils";
 import { chunks } from "../helper";
 import { IAnime } from "../type";
 import AnimeCard from "./AnimeCard";
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+const AutoPlaySwipeableViews = SwipeableViews;
 
 const AnimeCarousel = ({
   todayAnime,
   onClick,
   fetchingData,
+  label,
 }: {
   todayAnime: Array<IAnime>;
   onClick: any;
   fetchingData: boolean;
+  label: string;
 }) => {
   const [index, setIndex] = useState(0);
+  const onPaginatorClick = (incrementBy: number) => {
+    const sectionNum = Math.ceil(todayAnime.length / 4);
+    const ifInc = index + incrementBy;
+    if (ifInc < 0) setIndex(sectionNum - 1);
+    else if (ifInc >= sectionNum) setIndex(0);
+    else setIndex(ifInc);
+  };
+
   return (
     <IF c={fetchingData}>
       <AspectRatio width={"100%"} ratio={16 / 9}>
         <Skeleton rounded={"md"} />
       </AspectRatio>
       <ELSE />
+      <HStack px={2}>
+        <Text fontWeight={"extrabold"} paddingY={3}>
+          {label}
+        </Text>
+        <Spacer />
+        <ButtonGroup
+          size="sm"
+          isAttached
+          variant="solid"
+          display={["none", "flex"]}
+        >
+          <IconButton
+            onClick={() => onPaginatorClick(-1)}
+            icon={<ArrowBackIcon />}
+            aria-label="Go Left"
+          />
+          <IconButton
+            onClick={() => onPaginatorClick(1)}
+            icon={<ArrowForwardIcon />}
+            aria-label="Go right"
+          />
+        </ButtonGroup>
+      </HStack>
       <AutoPlaySwipeableViews
         onChangeIndex={setIndex}
         enableMouseEvents
@@ -32,10 +74,10 @@ const AnimeCarousel = ({
         children={chunks(todayAnime).map(
           (animePair: Array<IAnime>, index: number) => (
             <Grid
-              templateColumns={["repeat(4, 1fr)", "repeat(2, 1fr)"]}
+              templateColumns={["repeat(4, 1fr)", "repeat(4, 1fr)"]}
               rounded={"md"}
               key={index}
-              gap={[2, 2, 5]}
+              gap={2}
               p={2}
             >
               <FOR

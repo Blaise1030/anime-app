@@ -1,4 +1,5 @@
 import { createContext, ReactElement, useEffect, useState } from "react";
+import { getSeason } from "../helper";
 import { IAnime } from "../type";
 
 const initContext = {};
@@ -6,11 +7,13 @@ export const UseAnimeContext = createContext<any>(initContext);
 
 const AnimeContext = ({ children }: { children: ReactElement }) => {
   const [animeToday, setAnimeToday] = useState<Array<IAnime>>([]);
+  const [animeSeason, setAnimeSeason] = useState<Array<IAnime>>([]);
   const [fetchingData, setFetchingData] = useState<boolean>(true);
   const [anime, setAnime] = useState<Array<IAnime>>([]);
 
   useEffect(() => {
     fetchTodayAnime();
+    fetchSeason();
     fetchAnime();
   }, []);
 
@@ -40,7 +43,27 @@ const AnimeContext = ({ children }: { children: ReactElement }) => {
       );
       const json = await res.json();
       const animes = json.anime;
-      setAnime(animes?.length > 8 ? animes.slice(0, 8) : animes);
+      setAnime(animes.length > 12 ? animes.slice(0, 12) : anime);
+      setFetchingData(false);
+    } catch (error) {
+      if (import.meta.env.DEV) console.log(error);
+    }
+  };
+
+  const fetchSeason = async () => {
+    const currentDate = new Date();
+    try {
+      setFetchingData(true);
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_APP_ANIME_ENDPOINT
+        }/season/${currentDate.getFullYear()}/${getSeason(
+          currentDate.getMonth()
+        )}`
+      );
+      const json = await res.json();
+      const animes = json.anime;
+      setAnimeSeason(animes.length > 12 ? animes.slice(0, 12) : anime);
       setFetchingData(false);
     } catch (error) {
       if (import.meta.env.DEV) console.log(error);
@@ -53,6 +76,7 @@ const AnimeContext = ({ children }: { children: ReactElement }) => {
         anime,
         setAnime,
         animeToday,
+        animeSeason,
         fetchingData,
         fetchTodayAnime,
       }}

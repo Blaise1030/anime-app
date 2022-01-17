@@ -10,7 +10,6 @@ import {
   Divider,
   Skeleton,
   Wrap,
-  Tag,
   Grid,
   GridItem,
   Stat,
@@ -34,6 +33,7 @@ import {
   EmojiHappyIcon,
 } from "@heroicons/react/solid";
 import { UseAnimeDetailsContext } from "../Context/AnimeDetailsContext";
+import MovieTag from "../Components/MovieTag";
 
 const DetailsPage = () => {
   const { fetchAnimeDetail, selectedAnime, fetchingData } = useContext(
@@ -249,25 +249,6 @@ const AnimeStat = ({
       </Grid>
       <Divider />
     </Box>
-  );
-};
-
-const MovieTag = ({
-  index,
-  mal_id,
-  name,
-}: {
-  index: number;
-  mal_id: number;
-  name: string;
-}) => {
-  const colorScheme = ["orange", "teal", "red", "blue", "purple", "yellow"];
-  return (
-    <Tag
-      colorScheme={colorScheme[index % (colorScheme.length - 1)]}
-      children={<>{name}</>}
-      key={mal_id}
-    />
   );
 };
 

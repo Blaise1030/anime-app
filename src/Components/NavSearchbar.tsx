@@ -28,7 +28,7 @@ import {
   Collapse,
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
-import { FOR, IF, ELSEIF } from "react-controls-statements";
+import { FOR, IF } from "react-controls-statements";
 import { useNavigate } from "react-router-dom";
 import useKeyboardShortcut from "use-keyboard-shortcut";
 import { UseAnimeDetailsContext } from "../Context/AnimeDetailsContext";
@@ -96,7 +96,7 @@ const NavSearchModal = ({
   onClose: () => void;
   isOpen: boolean;
 }) => {
-  const [isLargerThan1280] = useMediaQuery("(min-width: 1280px)");
+  const [isLargerThan1280] = useMediaQuery("(min-width: 768px)");
   const navigate = useNavigate();
   const { fetchAnimeDetail } = useContext(UseAnimeDetailsContext);
   const { searchResult, onSearch, fetchingData, noResult, onClickSeeAll } =
@@ -153,7 +153,7 @@ const NavSearchModal = ({
           <Collapse in={Boolean(searchResult?.length)} animateOpacity>
             <Divider />
             <Box
-              maxH={["100%", "100%", "60vh"]}
+              maxH={["100%", "100%", "60vh", "60vh"]}
               className="hideScrollbar"
               overflowY={"auto"}
             >

@@ -1,4 +1,5 @@
-import { Grid, Text } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { Center, Grid, HStack, IconButton, Text } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { IF, FOR, ELSE } from "react-controls-statements";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -32,30 +33,45 @@ const SearchResultPage = () => {
   const onSelectPageNum = (index: number) => {
     setDisabled(true);
     setSearchPageNum(index);
-    setTimeout(() => setDisabled(false), 400);
+    setTimeout(() => setDisabled(false), 500);
   };
 
   return (
     <SearchBarLayout>
-      <Text fontWeight={"extrabold"} paddingY={3}>
-        Search Result for {searchParams.get("query")}
-      </Text>
-      <Grid templateColumns="repeat(4, 1fr)" gap={2}>
-        <IF c={searchPageLoading || searchPageRes?.length === 0}>
-          <AnimeCardSkeleton />
-          <ELSE />
-          <FOR
-            from={searchPageRes || []}
-            each={(a: IAnime, index: number) => (
-              <AnimeCard
-                key={`${a?.mal_id}-${index}`}
-                anime={a}
-                onClick={onClick}
-              />
-            )}
-          />
-        </IF>
-      </Grid>
+      <HStack py={2}>
+        <IconButton
+          icon={<ArrowBackIcon />}
+          colorScheme="teal"
+          aria-label="backhome"
+          variant={"ghost"}
+          onClick={() => navigate(-1)}
+        />
+        <Text fontWeight={"extrabold"} paddingY={3} fontSize={20}>
+          Search Result for {searchParams.get("query")}
+        </Text>
+      </HStack>
+      <IF c={pageNoResult}>
+        <Center width={"100%"} height={"80%"}>
+          Can't load this page somehow 😢
+        </Center>
+        <ELSE />
+        <Grid templateColumns="repeat(4, 1fr)" gap={2}>
+          <IF c={searchPageLoading || searchPageRes?.length === 0}>
+            <AnimeCardSkeleton />
+            <ELSE />
+            <FOR
+              from={searchPageRes || []}
+              each={(a: IAnime, index: number) => (
+                <AnimeCard
+                  key={`${a?.mal_id}-${index}`}
+                  anime={a}
+                  onClick={onClick}
+                />
+              )}
+            />
+          </IF>
+        </Grid>
+      </IF>
 
       <DesktopPaginator
         setSelectedPage={onSelectPageNum}

@@ -5,7 +5,7 @@ const AnimeCardSkeleton = () => {
   return (
     <FOR
       each={(n: number) => <AnimeCard key={n} onClick={() => {}} />}
-      from={Array.from(Array(16).keys())}
+      from={Array.from(Array(20).keys())}
     />
   );
 };

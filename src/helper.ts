@@ -22,9 +22,9 @@ function nFormatter(num: number, digits: number | undefined) {
 
 export function chunks<T>(arr: T[]): Array<Array<T>> {
   var pairs = [];
-  for (var i = 0; i < arr.length; i += 2) {
-    if (arr[i + 1] !== undefined) {
-      pairs.push([arr[i], arr[i + 1]]);
+  for (var i = 0; i < arr.length; i += 4) {
+    if (arr[i + 1] !== undefined && arr[i + 2] && arr[i + 3]) {
+      pairs.push([arr[i], arr[i + 1], arr[i + 2], arr[i + 3]]);
     } else {
       pairs.push([arr[i]]);
     }
@@ -43,3 +43,10 @@ export const debounce = (fn: Function, delay: number) => {
     }, delay);
   };
 };
+
+export function getSeason(month: number) {
+  if (3 <= month && month <= 5) return "spring";
+  if (6 <= month && month <= 8) return "summer";
+  if (9 <= month && month <= 11) return "fall";
+  return "winter";
+}

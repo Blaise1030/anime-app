@@ -23,7 +23,7 @@ const NavBar = () => {
       padding={3}
       bg={bg}
     >
-      <HStack width={["100%", "100%", 800]} margin={"auto"}>
+      <HStack width={["100%", "100%", "100%", 800]} margin={"auto"}>
         <NavBarIcon />
         <Spacer />
         <NavSearchbar />

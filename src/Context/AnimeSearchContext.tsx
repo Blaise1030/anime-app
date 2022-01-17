@@ -33,9 +33,8 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
   const onClickSeeAll = () => {
     setSearchPageNum(1);
     setSearchPageLoading(true);
-    setSearchPageRes(searchResult);
     navigate({
-      search: `?query=${query}`,
+      search: `?query=${query.toLowerCase().replaceAll(" ", "")}`,
       pathname: "/search",
     });
     setSearchPageLoading(false);
@@ -56,14 +55,14 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
     const controller = new AbortController();
     setRequests(requests.concat([controller]));
     document.getElementById("scroll-height")?.scrollTo(0, 0);
+    setPageNoResult(false);
     try {
       setSearchPageLoading(true);
-      setNoResult(false);
       setSearchResults([]);
       const res = await fetch(
         `${
           import.meta.env.VITE_APP_ANIME_ENDPOINT
-        }/search/anime?q=${query}&page=${searchPageNum}`,
+        }/search/anime?q=${query}&page=${searchPageNum}&limit=20`,
         {
           signal: controller.signal,
           method: "get",
@@ -72,6 +71,7 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
       if (res.status === 404) {
         setPageNoResult(true);
       } else {
+        setRequests([]);
         const json = await res.json();
         if (searchPageNum === 1) setSeachPageTotalNum(json?.last_page);
         const results = json.results;
@@ -79,6 +79,7 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
         setSearchPageLoading(false);
       }
     } catch (e: any) {
+      if (!e.toString().includes("AbortError")) setPageNoResult(true);
       if (import.meta.env.DEV) console.log(e);
     }
   };
@@ -90,21 +91,22 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
     if (query.length === 0) {
       setSearchResults([]);
       setFetchingData(false);
-      setNoResult(false);
     }
+    setNoResult(false);
     setQuery(query);
     try {
       setFetchingData(true);
       setNoResult(false);
       const res = await fetch(
-        `${
-          import.meta.env.VITE_APP_ANIME_ENDPOINT
-        }/search/anime?q=${query}&page=1`,
+        `${import.meta.env.VITE_APP_ANIME_ENDPOINT}/search/anime?q=${query
+          .toLowerCase()
+          .replaceAll(" ", "")}&page=1&limit=20`,
         {
           signal: controller.signal,
           method: "get",
         }
       );
+      setRequests([]);
       if (res.status === 404) setNoResult(true);
       const json = await res.json();
       setSeachPageTotalNum(json?.last_page);
@@ -112,6 +114,7 @@ const AnimeSearchContext = ({ children }: { children: ReactElement }) => {
       setSearchResults(results || []);
       setFetchingData(false);
     } catch (e: any) {
+      if (!e.toString().includes("AbortError")) setPageNoResult(true);
       if (import.meta.env.DEV) console.log(e);
     }
   };
